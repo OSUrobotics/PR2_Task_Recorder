@@ -109,15 +109,17 @@ include_directories(
 # )
 
 ## Declare a cpp executable
- add_executable(pr2_controller src/pr2_controller.cpp)
- add_executable(record_data_task src/record_data_task.cpp)
+ #add_executable(pr2_controller src/pr2_controller.cpp)
+ #add_executable(record_data_task src/record_data_task.cpp src/GoalPoints.cpp)
+ add_executable(experiment src/experiment.cpp src/record_data_task.cpp src/goal_points.cpp src/pr2_controller.cpp)
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 # add_dependencies(pr2_pca_experiment_node pr2_pca_experiment_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(pr2_controller ${catkin_LIBRARIES})
-target_link_libraries(record_data_task ${catkin_LIBRARIES})
+#target_link_libraries(pr2_controller ${catkin_LIBRARIES})
+#target_link_libraries(record_data_task ${catkin_LIBRARIES})
+target_link_libraries(experiment ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############

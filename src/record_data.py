@@ -3,8 +3,12 @@ import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import JointState
 import atexit
+import datetime
+import sys
+
 class RecordJoints(object):
-    def __init__(self):
+    def __init__(self, filename):
+        self.file = open(filename, 'w')
         self.joints_data = dict()
         rospy.init_node('record_joints')
 
@@ -22,11 +26,16 @@ class RecordJoints(object):
             self.joints_data[data.name[i]]['effort'].append(data.effort[i])
 
     def export(self):
-            f = open('workfile', 'a')
-            f.write(str(self.joints_data))
+            self.file.write(str(self.joints_data))
             self.joints_data.clear()
-            f.close()        
+            self.file.close()  
+                  
 if __name__ == '__main__':
-    record_joints = RecordJoints()
+    save_loc = datetime.datetime.today().strftime("%d.%m.%y:%H.%M")
+    if len(sys.argv) == 2:
+        save_loc = sys.argv[1]
+
+    print 'Printing to: ' + save_loc
+    record_joints = RecordJoints(save_loc)
     atexit.register(record_joints.export)
     rospy.spin()
